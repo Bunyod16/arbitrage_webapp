@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+<style>
+    th{ 
+        color:#fff;
+            }
+</style>
+<table class="table table-striped">
+    <tr  class="bg-info">
+        <th>Pair</th>
+        <th>SundaeSwap</th>
+        <th>MinSwap</th>
+        <th>Difference</th>
+    </tr>
+
+    <tbody id="myTable">
+        
+    </tbody>
+</table>
+<script>
+
+function buildTable(data){
+    var table = document.getElementById("myTable")
+    console.log(data);
+    color=""
+    for (var i = 0; i < data.length; i++) {
+        if (data[i].difference > 1) {
+            color="yellow";
+        }
+        if (data[i].difference > 3) {
+            color="red";
+        }
+        var row = `<tr>
+                                <td>${data[i].pair}</td>
+                                <td>${data[i].sPrice}</td>
+                                <td>${data[i].mPrice}</td>
+                                <td bgcolor=${color}>${data[i].difference}%</td>
+                        </tr>`
+        table.innerHTML += row
+    }
+}
+
+
+async function get_prices() {
+    fetch("./prices.json")
+    .then(function(resp) {
+        return resp.json();
+    })
+    .then(function(data) {
+        console.log(data);
+        buildTable(data);
+    });
+}
+
+get_prices();
+</script>
+</html>
